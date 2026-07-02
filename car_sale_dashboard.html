@@ -2,73 +2,51 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Classic Models — Car Sale Dashboard</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: 'Segoe UI', sans-serif; background: #0f1117; color: #e2e8f0; min-height: 100vh; }
+  body { font-family: 'Segoe UI', sans-serif; background: #0f1117; color: #e2e8f0; }
 
   header {
     background: linear-gradient(135deg, #1a1f2e 0%, #0f1117 100%);
     border-bottom: 1px solid #2d3748;
-    padding: 24px 32px;
-    display: flex; align-items: center; gap: 16px;
+    padding: 18px 24px;
+    display: flex; align-items: center; gap: 12px;
   }
-  header .logo { font-size: 28px; }
-  header h1 { font-size: 22px; font-weight: 700; color: #fff; }
-  header p { font-size: 13px; color: #718096; margin-top: 2px; }
+  header .logo { font-size: 24px; }
+  header h1 { font-size: 18px; font-weight: 700; color: #fff; }
+  header p { font-size: 12px; color: #718096; margin-top: 2px; }
 
-  .dashboard { padding: 28px 32px; max-width: 1400px; margin: 0 auto; }
+  .dashboard { padding: 20px 24px; }
 
-  /* KPI Cards */
-  .kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 28px; }
+  .kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 20px; }
   .kpi {
-    background: #1a1f2e;
-    border: 1px solid #2d3748;
-    border-radius: 12px;
-    padding: 20px 22px;
-    position: relative;
-    overflow: hidden;
+    background: #1a1f2e; border: 1px solid #2d3748; border-radius: 10px;
+    padding: 16px 18px; position: relative; overflow: hidden;
   }
-  .kpi::before {
-    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
-  }
+  .kpi::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
   .kpi.green::before { background: linear-gradient(90deg, #38a169, #68d391); }
   .kpi.blue::before  { background: linear-gradient(90deg, #3182ce, #63b3ed); }
   .kpi.purple::before{ background: linear-gradient(90deg, #805ad5, #b794f4); }
   .kpi.orange::before{ background: linear-gradient(90deg, #dd6b20, #f6ad55); }
+  .kpi .label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: #718096; margin-bottom: 6px; }
+  .kpi .value { font-size: 22px; font-weight: 700; color: #fff; }
+  .kpi .sub   { font-size: 11px; color: #68d391; margin-top: 4px; }
+  .kpi .icon  { position: absolute; right: 14px; top: 14px; font-size: 24px; opacity: 0.15; }
 
-  .kpi .label { font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: #718096; margin-bottom: 8px; }
-  .kpi .value { font-size: 26px; font-weight: 700; color: #fff; }
-  .kpi .sub   { font-size: 12px; color: #68d391; margin-top: 6px; }
-  .kpi .icon  { position: absolute; right: 18px; top: 18px; font-size: 28px; opacity: 0.18; }
-
-  /* Chart grid */
-  .charts { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
-  .charts.three { grid-template-columns: 1.4fr 1fr; }
+  .charts { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
   .chart-card {
-    background: #1a1f2e;
-    border: 1px solid #2d3748;
-    border-radius: 12px;
-    padding: 22px;
+    background: #1a1f2e; border: 1px solid #2d3748; border-radius: 10px; padding: 16px;
   }
-  .chart-card h3 { font-size: 14px; font-weight: 600; color: #a0aec0; margin-bottom: 18px; text-transform: uppercase; letter-spacing: 0.06em; }
-  .chart-card canvas { display: block; }
+  .chart-card h3 { font-size: 11px; font-weight: 600; color: #a0aec0; margin-bottom: 14px; text-transform: uppercase; letter-spacing: 0.06em; }
 
-  .full-width { grid-column: 1 / -1; }
-
-  /* Bottom row */
-  .bottom { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
-
-  /* Table */
-  table { width: 100%; border-collapse: collapse; font-size: 13px; }
-  thead th { color: #718096; font-weight: 600; text-align: left; padding: 6px 10px; border-bottom: 1px solid #2d3748; font-size: 11px; text-transform: uppercase; }
+  table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  thead th { color: #718096; font-weight: 600; text-align: left; padding: 5px 8px; border-bottom: 1px solid #2d3748; font-size: 10px; text-transform: uppercase; }
   tbody tr:hover { background: #232836; }
-  tbody td { padding: 8px 10px; border-bottom: 1px solid #1e2330; color: #e2e8f0; }
-  .rank { color: #718096; width: 24px; }
-  .bar-cell { display: flex; align-items: center; gap: 8px; }
-  .mini-bar { height: 6px; border-radius: 3px; background: linear-gradient(90deg, #3182ce, #63b3ed); }
+  tbody td { padding: 6px 8px; border-bottom: 1px solid #1e2330; color: #e2e8f0; }
+  .rank { color: #718096; width: 20px; }
+  .bar-cell { display: flex; align-items: center; gap: 6px; }
+  .mini-bar { height: 5px; border-radius: 3px; background: linear-gradient(90deg, #3182ce, #63b3ed); min-width: 4px; }
 </style>
 </head>
 <body>
@@ -82,205 +60,101 @@
 </header>
 
 <div class="dashboard">
-
-  <!-- KPI Cards -->
   <div class="kpis">
-    <div class="kpi green">
-      <div class="icon">💰</div>
-      <div class="label">Total Revenue</div>
-      <div class="value">$9.60M</div>
-      <div class="sub">Across all product lines</div>
-    </div>
-    <div class="kpi blue">
-      <div class="icon">📈</div>
-      <div class="label">Total Profit</div>
-      <div class="value">$2.07M</div>
-      <div class="sub">21.5% profit margin</div>
-    </div>
-    <div class="kpi purple">
-      <div class="icon">📦</div>
-      <div class="label">Total Orders</div>
-      <div class="value">318</div>
-      <div class="sub">Avg $30.2K per order</div>
-    </div>
-    <div class="kpi orange">
-      <div class="icon">👥</div>
-      <div class="label">Customers</div>
-      <div class="value">97</div>
-      <div class="sub">Across 28 countries</div>
-    </div>
+    <div class="kpi green"><div class="icon">💰</div><div class="label">Total Revenue</div><div class="value">$9.60M</div><div class="sub">Across all product lines</div></div>
+    <div class="kpi blue"><div class="icon">📈</div><div class="label">Total Profit</div><div class="value">$2.07M</div><div class="sub">21.5% profit margin</div></div>
+    <div class="kpi purple"><div class="icon">📦</div><div class="label">Total Orders</div><div class="value">318</div><div class="sub">Avg $30.2K per order</div></div>
+    <div class="kpi orange"><div class="icon">👥</div><div class="label">Customers</div><div class="value">97</div><div class="sub">Across 28 countries</div></div>
   </div>
 
-  <!-- Row 1: Line chart + Pie chart -->
   <div class="charts">
     <div class="chart-card">
       <h3>Monthly Revenue &amp; Profit Trend</h3>
-      <canvas id="lineChart" height="200"></canvas>
+      <canvas id="lineChart" height="160"></canvas>
     </div>
     <div class="chart-card">
       <h3>Revenue by Product Line</h3>
-      <canvas id="pieChart" height="200"></canvas>
+      <canvas id="pieChart" height="160"></canvas>
     </div>
   </div>
 
-  <!-- Row 2: Bar charts -->
   <div class="charts">
     <div class="chart-card">
       <h3>Revenue vs Profit by Product Line</h3>
-      <canvas id="barChart" height="180"></canvas>
+      <canvas id="barChart" height="150"></canvas>
     </div>
     <div class="chart-card">
       <h3>Top 10 Countries by Revenue</h3>
-      <canvas id="countryChart" height="180"></canvas>
+      <canvas id="countryChart" height="150"></canvas>
     </div>
   </div>
 
-  <!-- Row 3: Top products table -->
   <div class="charts" style="grid-template-columns:1fr">
     <div class="chart-card">
       <h3>Top 10 Products by Revenue</h3>
       <table>
-        <thead>
-          <tr><th class="rank">#</th><th>Product</th><th style="text-align:right">Revenue</th><th style="width:200px">Share</th></tr>
-        </thead>
+        <thead><tr><th class="rank">#</th><th>Product</th><th style="text-align:right">Revenue</th><th style="width:180px">Share</th></tr></thead>
         <tbody id="productTable"></tbody>
       </table>
     </div>
   </div>
-
 </div>
 
 <script>
-const COLORS = {
-  blue:   '#3182ce',
-  green:  '#38a169',
-  purple: '#805ad5',
-  orange: '#dd6b20',
-  teal:   '#2c7a7b',
-  pink:   '#d53f8c',
-  yellow: '#d69e2e',
-  cyan:   '#00b5d8',
-};
-
 const gridColor = 'rgba(255,255,255,0.06)';
 const textColor = '#718096';
-
 Chart.defaults.color = textColor;
 Chart.defaults.borderColor = gridColor;
 
-// --- Monthly Revenue & Profit ---
-const months = [
-  '2003-01','2003-02','2003-03','2003-04','2003-05','2003-06',
-  '2003-07','2003-08','2003-09','2003-10','2003-11','2003-12',
-  '2004-01','2004-02','2004-03','2004-04','2004-05','2004-06',
-  '2004-07','2004-08','2004-09','2004-10','2004-11','2004-12',
-  '2005-01','2005-02','2005-03','2005-04','2005-05',
-];
+const pieLabels = ['Classic Cars','Motorcycles','Trucks & Buses','Planes','Ships','Vintage Cars','Trains'];
+const pieData   = [2096815,892219,617601,525346,477443,412970,52123];
+const pieColors = ['#3182ce','#805ad5','#38a169','#dd6b20','#d53f8c','#00b5d8','#d69e2e'];
+
+const months = ['2003-01','2003-02','2003-03','2003-04','2003-05','2003-06','2003-07','2003-08','2003-09','2003-10','2003-11','2003-12','2004-01','2004-02','2004-03','2004-04','2004-05','2004-06','2004-07','2004-08','2004-09','2004-10','2004-11','2004-12','2005-01','2005-02','2005-03','2005-04','2005-05'];
 const revenue = [116692,128403,160517,185848,179435,150470,120653,174073,236444,523792,600757,261876,83539,137234,188849,169586,192673,162855,188239,197809,197146,551434,709491,258622,82926,136899,181649,214029,188847];
 const profit  = [24183,26624,33259,38524,37180,31185,25003,36077,49012,108576,124512,54249,17310,28434,39138,35139,39935,33739,39014,40991,40851,114231,147051,53609,17185,28363,37653,44341,39115];
 const labels  = months.map(m => { const [y,mo] = m.split('-'); return ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][+mo-1]+' '+y.slice(2); });
 
 new Chart(document.getElementById('lineChart'), {
   type: 'line',
-  data: {
-    labels,
-    datasets: [
-      { label: 'Revenue', data: revenue, borderColor: COLORS.blue, backgroundColor: 'rgba(49,130,206,0.12)', fill: true, tension: 0.4, pointRadius: 2, borderWidth: 2 },
-      { label: 'Profit',  data: profit,  borderColor: COLORS.green, backgroundColor: 'rgba(56,161,105,0.1)', fill: true, tension: 0.4, pointRadius: 2, borderWidth: 2 },
-    ]
-  },
-  options: {
-    responsive: true,
-    plugins: { legend: { position: 'top', labels: { boxWidth: 12, font: { size: 12 } } } },
-    scales: {
-      x: { ticks: { maxTicksLimit: 10, font: { size: 11 } }, grid: { color: gridColor } },
-      y: { ticks: { callback: v => '$' + (v/1000).toFixed(0)+'K', font: { size: 11 } }, grid: { color: gridColor } }
-    }
-  }
+  data: { labels, datasets: [
+    { label: 'Revenue', data: revenue, borderColor: '#3182ce', backgroundColor: 'rgba(49,130,206,0.12)', fill: true, tension: 0.4, pointRadius: 2, borderWidth: 2 },
+    { label: 'Profit',  data: profit,  borderColor: '#38a169', backgroundColor: 'rgba(56,161,105,0.1)',  fill: true, tension: 0.4, pointRadius: 2, borderWidth: 2 },
+  ]},
+  options: { responsive: true, plugins: { legend: { position: 'top', labels: { boxWidth: 10, font: { size: 11 } } } },
+    scales: { x: { ticks: { maxTicksLimit: 8, font: { size: 10 } }, grid: { color: gridColor } }, y: { ticks: { callback: v => '$'+(v/1000).toFixed(0)+'K', font: { size: 10 } }, grid: { color: gridColor } } } }
 });
-
-// --- Pie Chart ---
-const pieLabels = ['Classic Cars','Motorcycles','Trucks & Buses','Planes','Ships','Vintage Cars','Trains'];
-const pieData   = [2096815, 892219, 617601, 525346, 477443, 412970, 52123];
-const pieColors = ['#3182ce','#805ad5','#38a169','#dd6b20','#d53f8c','#00b5d8','#d69e2e'];
 
 new Chart(document.getElementById('pieChart'), {
   type: 'doughnut',
   data: { labels: pieLabels, datasets: [{ data: pieData, backgroundColor: pieColors, borderWidth: 2, borderColor: '#1a1f2e', hoverOffset: 6 }] },
-  options: {
-    responsive: true,
-    cutout: '60%',
-    plugins: {
-      legend: { position: 'right', labels: { boxWidth: 12, font: { size: 12 }, padding: 12 } },
-      tooltip: { callbacks: { label: ctx => ` $${(ctx.raw/1000).toFixed(0)}K` } }
-    }
-  }
+  options: { responsive: true, cutout: '60%', plugins: { legend: { position: 'right', labels: { boxWidth: 10, font: { size: 11 }, padding: 10 } }, tooltip: { callbacks: { label: ctx => ` $${(ctx.raw/1000).toFixed(0)}K` } } } }
 });
 
-// --- Grouped Bar: Revenue vs Profit by Product Line ---
 new Chart(document.getElementById('barChart'), {
   type: 'bar',
-  data: {
-    labels: pieLabels,
-    datasets: [
-      { label: 'Revenue', data: pieData, backgroundColor: 'rgba(49,130,206,0.8)', borderRadius: 4 },
-      { label: 'Profit',  data: [863692,377028,250788,189866,207836,163744,15908], backgroundColor: 'rgba(56,161,105,0.8)', borderRadius: 4 },
-    ]
-  },
-  options: {
-    responsive: true,
-    plugins: { legend: { position: 'top', labels: { boxWidth: 12, font: { size: 12 } } } },
-    scales: {
-      x: { ticks: { font: { size: 11 } }, grid: { color: gridColor } },
-      y: { ticks: { callback: v => '$'+(v/1000).toFixed(0)+'K', font: { size: 11 } }, grid: { color: gridColor } }
-    }
-  }
+  data: { labels: pieLabels, datasets: [
+    { label: 'Revenue', data: pieData, backgroundColor: 'rgba(49,130,206,0.8)', borderRadius: 4 },
+    { label: 'Profit',  data: [863692,377028,250788,189866,207836,163744,15908], backgroundColor: 'rgba(56,161,105,0.8)', borderRadius: 4 },
+  ]},
+  options: { responsive: true, plugins: { legend: { position: 'top', labels: { boxWidth: 10, font: { size: 11 } } } },
+    scales: { x: { ticks: { font: { size: 10 } }, grid: { color: gridColor } }, y: { ticks: { callback: v => '$'+(v/1000).toFixed(0)+'K', font: { size: 10 } }, grid: { color: gridColor } } } }
 });
-
-// --- Country Bar Chart (horizontal) ---
-const countries = ['USA','France','Australia','New Zealand','Finland','Italy','Denmark','Singapore','Germany','Japan'];
-const countryRev = [3143154,648523,551637,339386,295149,235111,198430,196604,196470,167909];
 
 new Chart(document.getElementById('countryChart'), {
   type: 'bar',
-  data: {
-    labels: countries,
-    datasets: [{ label: 'Revenue', data: countryRev, backgroundColor: pieColors.concat(['#718096','#a0aec0']), borderRadius: 4 }]
-  },
-  options: {
-    indexAxis: 'y',
-    responsive: true,
-    plugins: { legend: { display: false } },
-    scales: {
-      x: { ticks: { callback: v => '$'+(v/1000).toFixed(0)+'K', font: { size: 11 } }, grid: { color: gridColor } },
-      y: { ticks: { font: { size: 12 } }, grid: { color: 'transparent' } }
-    }
-  }
+  data: { labels: ['USA','France','Australia','New Zealand','Finland','Italy','Denmark','Singapore','Germany','Japan'],
+    datasets: [{ label: 'Revenue', data: [3143154,648523,551637,339386,295149,235111,198430,196604,196470,167909], backgroundColor: pieColors.concat(['#718096','#a0aec0']), borderRadius: 4 }] },
+  options: { indexAxis: 'y', responsive: true, plugins: { legend: { display: false } },
+    scales: { x: { ticks: { callback: v => '$'+(v/1000).toFixed(0)+'K', font: { size: 10 } }, grid: { color: gridColor } }, y: { ticks: { font: { size: 11 } }, grid: { color: 'transparent' } } } }
 });
 
-// --- Product Table ---
-const products = [
-  ['2001 Ferrari Enzo', 190755],
-  ['1952 Alpine Renault 1300', 190017],
-  ['2003 Harley-Davidson Eagle Drag Bike', 170685],
-  ['1968 Ford Mustang', 161531],
-  ['1969 Ford Falcon', 152543],
-  ['2002 Suzuki XREO', 135767],
-  ['1969 Corvair Monza', 132363],
-  ['1957 Corvette Convertible', 130749],
-  ['1972 Alfa Romeo GTA', 127924],
-  ['1962 Lancia Delta 16V', 123123],
-];
+const products = [['2001 Ferrari Enzo',190755],['1952 Alpine Renault 1300',190017],['2003 Harley-Davidson Eagle Drag Bike',170685],['1968 Ford Mustang',161531],['1969 Ford Falcon',152543],['2002 Suzuki XREO',135767],['1969 Corvair Monza',132363],['1957 Corvette Convertible',130749],['1972 Alfa Romeo GTA',127924],['1962 Lancia Delta 16V',123123]];
 const maxRev = products[0][1];
 const tbody = document.getElementById('productTable');
 products.forEach(([name, rev], i) => {
   const pct = (rev / maxRev * 100).toFixed(1);
-  tbody.innerHTML += `<tr>
-    <td class="rank">${i+1}</td>
-    <td>${name}</td>
-    <td style="text-align:right;color:#63b3ed;font-weight:600">$${rev.toLocaleString()}</td>
-    <td><div class="bar-cell"><div class="mini-bar" style="width:${pct}%"></div><span style="font-size:11px;color:#718096">${pct}%</span></div></td>
-  </tr>`;
+  tbody.innerHTML += `<tr><td class="rank">${i+1}</td><td>${name}</td><td style="text-align:right;color:#63b3ed;font-weight:600">$${rev.toLocaleString()}</td><td><div class="bar-cell"><div class="mini-bar" style="width:${pct}%"></div><span style="font-size:10px;color:#718096">${pct}%</span></div></td></tr>`;
 });
 </script>
 </body>
