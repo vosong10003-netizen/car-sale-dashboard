@@ -50,10 +50,6 @@ The dataset is the **Classic Models** sample database — a fictional retailer o
 - Top market: **USA** ($3.14M, 33% of revenue)
 - Top product: **2001 Ferrari Enzo** ($190,755)
 
-## 📷 Preview
-
-> Dark-themed dashboard with purple/blue accent colors, 5 chart types, and a ranked product table.
-
 ## 🔍 How It Was Built
 
 1. Parsed the MySQL `.sql` dump using Python (regex-based row extraction)
